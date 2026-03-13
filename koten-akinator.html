@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>古典アキネイター ―助詞・助動詞の探偵―</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600;700&family=Zen+Old+Mincho:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --paper: #f5edd6;
+    --aged: #e8d9b0;
+    --sepia: #8b6914;
+    --vermilion: #c0392b;
+    --gold: #b8860b;
+    --shadow-ink: rgba(26,18,8,0.15);
+    --moss: #4a5e3a;
+    --indigo: #2c3e6b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #2a1f0e;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(139,105,20,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(44,62,107,0.1) 0%, transparent 60%),
+      repeating-linear-gradient(
+        0deg, transparent, transparent 48px,
+        rgba(139,105,20,0.04) 48px, rgba(139,105,20,0.04) 49px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 48px,
+        rgba(139,105,20,0.04) 48px, rgba(139,105,20,0.04) 49px
+      );
+    min-height: 100vh;
+    font-family: 'Noto Serif JP', serif;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px 80px;
+  }
+
+  /* SCROLL CONTAINER */
+  .scroll-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .scroll-top, .scroll-bottom {
+    width: 100%;
+    height: 44px;
+    background: linear-gradient(135deg, #7a4f1a 0%, #c49a3c 40%, #b8860b 60%, #7a4f1a 100%);
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,220,100,0.4);
+    position: relative;
+    z-index: 2;
+  }
+  .scroll-top::before, .scroll-top::after,
+  .scroll-bottom::before, .scroll-bottom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px; height: 44px;
+    background: radial-gradient(circle, #c49a3c 30%, #7a4f1a 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,220,100,0.3);
+  }
+  .scroll-top::before, .scroll-bottom::before { left: -10px; }
+  .scroll-top::after, .scroll-bottom::after { right: -10px; }
+
+  .scroll-body {
+    background: var(--paper);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"),
+      linear-gradient(180deg, #f2e6c2 0%, #f5edd6 20%, #f5edd6 80%, #f2e6c2 100%);
+    margin: 0 6px;
+    padding: 48px 52px;
+    position: relative;
+    box-shadow: inset 0 0 60px rgba(139,105,20,0.08);
+    border-left: 1px solid rgba(139,105,20,0.2);
+    border-right: 1px solid rgba(139,105,20,0.2);
+  }
+
+  .scroll-body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent 0px, transparent 31px,
+      rgba(139,105,20,0.07) 31px, rgba(139,105,20,0.07) 32px
+    );
+    pointer-events: none;
+  }
+
+  /* HEADER */
+  .site-header {
+    text-align: center;
+    margin-bottom: 36px;
+    position: relative;
+  }
+
+  .site-header .emblem {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--sepia);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.7;
+  }
+
+  .site-header h1 {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-shadow: 2px 2px 0 rgba(139,105,20,0.12);
+  }
+
+  .site-header .subtitle {
+    font-size: 13px;
+    color: var(--sepia);
+    letter-spacing: 0.3em;
+    margin-top: 10px;
+    font-weight: 300;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--sepia), transparent);
+    opacity: 0.4;
+  }
+  .divider-kanji {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 18px;
+    color: var(--sepia);
+    opacity: 0.6;
+  }
+
+  /* MODE SELECT */
+  #mode-select {
+    text-align: center;
+  }
+
+  .mode-intro {
+    font-size: 14px;
+    color: #5a4020;
+    line-height: 2;
+    margin-bottom: 32px;
+    letter-spacing: 0.05em;
+  }
+
+  .mode-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+
+  .mode-card {
+    background: linear-gradient(160deg, #fff8e8 0%, #f0dfa8 100%);
+    border: 1.5px solid rgba(139,105,20,0.3);
+    border-radius: 4px;
+    padding: 28px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 3px 3px 0 rgba(139,105,20,0.12);
+  }
+
+  .mode-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--vermilion), var(--gold));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .mode-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 5px 8px 0 rgba(139,105,20,0.2);
+    border-color: rgba(139,105,20,0.5);
+  }
+
+  .mode-card:hover::before { opacity: 1; }
+
+  .mode-card .icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .mode-card h2 {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 17px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .mode-card p {
+    font-size: 12px;
+    color: #6b4f2a;
+    line-height: 1.8;
+  }
+
+  /* GAME AREA */
+  #game-area { display: none; }
+
+  .game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .back-btn {
+    background: none;
+    border: 1px solid rgba(139,105,20,0.3);
+    border-radius: 3px;
+    padding: 6px 14px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    color: var(--sepia);
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.2s;
+  }
+  .back-btn:hover {
+    background: rgba(139,105,20,0.08);
+    border-color: var(--sepia);
+  }
+
+  .mode-badge {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 13px;
+    color: var(--vermilion);
+    letter-spacing: 0.15em;
+    background: rgba(192,57,43,0.06);
+    border: 1px solid rgba(192,57,43,0.2);
+    padding: 4px 14px;
+    border-radius: 2px;
+  }
+
+  .q-count {
+    font-size: 12px;
+    color: var(--sepia);
+    opacity: 0.7;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    height: 4px;
+    background: rgba(139,105,20,0.12);
+    border-radius: 2px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--vermilion), var(--gold));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* AKINATOR MODE */
+  .think-prompt {
+    background: linear-gradient(135deg, rgba(44,62,107,0.06), rgba(44,62,107,0.02));
+    border: 1px solid rgba(44,62,107,0.15);
+    border-left: 3px solid var(--indigo);
+    border-radius: 3px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: var(--indigo);
+    line-height: 1.9;
+    letter-spacing: 0.05em;
+  }
+
+  .question-bubble {
+    position: relative;
+    background: linear-gradient(135deg, #fff8e8, #fdf0cc);
+    border: 1.5px solid rgba(139,105,20,0.25);
+    border-radius: 4px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    animation: fadeSlide 0.4s ease;
+    box-shadow: 2px 4px 12px rgba(139,105,20,0.08);
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-bubble .q-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--sepia);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .question-bubble .q-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(139,105,20,0.2);
+  }
+
+  .question-bubble .q-text {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(15px, 2.5vw, 20px);
+    color: var(--ink);
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+  }
+
+  .answer-btns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .ans-btn {
+    background: linear-gradient(160deg, #fff8e8, #f0dfa8);
+    border: 1.5px solid rgba(139,105,20,0.25);
+    border-radius: 3px;
+    padding: 12px 8px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    text-align: center;
+    box-shadow: 2px 2px 0 rgba(139,105,20,0.1);
+  }
+
+  .ans-btn:hover {
+    background: linear-gradient(160deg, var(--vermilion), #a93226);
+    color: white;
+    border-color: var(--vermilion);
+    transform: translateY(-2px);
+    box-shadow: 3px 4px 0 rgba(139,105,20,0.15);
+  }
+
+  /* HINT LIST */
+  .hints-log {
+    margin-bottom: 20px;
+  }
+
+  .hint-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(139,105,20,0.15);
+    animation: fadeSlide 0.3s ease;
+  }
+
+  .hint-item:last-child { border-bottom: none; }
+
+  .hint-num {
+    background: var(--sepia);
+    color: var(--paper);
+    font-size: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .hint-text {
+    font-size: 13px;
+    color: #4a3010;
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+  }
+
+  /* GUESS AREA */
+  .guess-area {
+    margin-top: 24px;
+  }
+
+  .guess-label {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--sepia);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .guess-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .guess-btn {
+    background: linear-gradient(160deg, #fff8e8, #ecdfa8);
+    border: 1.5px solid rgba(139,105,20,0.25);
+    border-radius: 3px;
+    padding: 10px 6px;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    box-shadow: 1px 2px 0 rgba(139,105,20,0.1);
+  }
+
+  .guess-btn:hover {
+    background: var(--indigo);
+    color: white;
+    border-color: var(--indigo);
+    transform: translateY(-2px);
+  }
+
+  /* RESULT */
+  .result-panel {
+    text-align: center;
+    padding: 32px 24px;
+    background: linear-gradient(160deg, #fff8e8, #f8edc8);
+    border: 1.5px solid rgba(139,105,20,0.3);
+    border-radius: 4px;
+    animation: fadeSlide 0.5s ease;
+    box-shadow: 4px 6px 0 rgba(139,105,20,0.12);
+  }
+
+  .result-panel .result-emoji {
+    font-size: 52px;
+    margin-bottom: 16px;
+    display: block;
+    animation: bounce 0.6s ease;
+  }
+
+  @keyframes bounce {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  .result-panel .result-word {
+    font-family: 'Zen Old Mincho', serif;
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--vermilion);
+    margin-bottom: 8px;
+    letter-spacing: 0.15em;
+    text-shadow: 2px 2px 0 rgba(192,57,43,0.12);
+  }
+
+  .result-panel .result-type {
+    font-size: 12px;
+    color: var(--sepia);
+    letter-spacing: 0.3em;
+    margin-bottom: 20px;
+  }
+
+  .fact-box {
+    background: rgba(44,62,107,0.05);
+    border: 1px solid rgba(44,62,107,0.12);
+    border-radius: 3px;
+    padding: 16px 20px;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .fact-box dt {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--indigo);
+    margin-bottom: 4px;
+    margin-top: 10px;
+  }
+  .fact-box dt:first-child { margin-top: 0; }
+
+  .fact-box dd {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.7;
+    padding-left: 8px;
+    border-left: 2px solid rgba(44,62,107,0.2);
+  }
+
+  .play-again-btn {
+    background: linear-gradient(135deg, var(--vermilion), #a93226);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 14px 36px;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    box-shadow: 3px 4px 0 rgba(139,105,20,0.25);
+    transition: all 0.2s;
+  }
+  .play-again-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 4px 6px 0 rgba(139,105,20,0.3);
+  }
+
+  .wrong-msg {
+    background: rgba(192,57,43,0.06);
+    border: 1px solid rgba(192,57,43,0.2);
+    border-radius: 3px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--vermilion);
+    margin-bottom: 16px;
+    text-align: center;
+    animation: fadeSlide 0.3s ease;
+  }
+
+  /* AKINATOR speaking */
+  .aki-speak {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .aki-avatar {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--indigo), #1a2545);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.2);
+    border: 2px solid rgba(184,134,11,0.3);
+  }
+
+  .aki-bubble {
+    background: linear-gradient(135deg, #e8f0ff, #dbe8f5);
+    border: 1px solid rgba(44,62,107,0.2);
+    border-radius: 4px;
+    border-top-left-radius: 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--indigo);
+    line-height: 1.8;
+    flex: 1;
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+
+  .aki-bubble::before {
+    content: '';
+    position: absolute;
+    top: 12px; left: -8px;
+    border: 8px solid transparent;
+    border-right-color: rgba(44,62,107,0.2);
+    border-right-width: 8px;
+    border-left: none;
+  }
+
+  .aki-bubble::after {
+    content: '';
+    position: absolute;
+    top: 13px; left: -6px;
+    border: 7px solid transparent;
+    border-right-color: #e8f0ff;
+    border-right-width: 7px;
+    border-left: none;
+  }
+
+  /* DECORATIVE */
+  .hanko {
+    position: absolute;
+    bottom: 20px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    border: 3px solid rgba(192,57,43,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Zen Old Mincho', serif;
+    font-size: 11px;
+    color: rgba(192,57,43,0.3);
+    letter-spacing: 0;
+    transform: rotate(-15deg);
+    pointer-events: none;
+    writing-mode: vertical-rl;
+  }
+
+  @media (max-width: 500px) {
+    .scroll-body { padding: 32px 24px; }
+    .mode-cards { grid-template-columns: 1fr; }
+    .answer-btns { grid-template-columns: 1fr 1fr; }
+    .guess-grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+<div class="scroll-wrap">
+  <div class="scroll-top"></div>
+  <div class="scroll-body">
+
+    <div class="hanko">古典</div>
+
+    <!-- HEADER -->
+    <header class="site-header" id="site-header">
+      <div class="emblem">KOTEN AKINATOR</div>
+      <h1>古典アキネイター</h1>
+      <div class="subtitle">助詞・助動詞の探偵</div>
+    </header>
+
+    <div class="divider" id="top-divider"><span class="divider-kanji">◈</span></div>
+
+    <!-- MODE SELECT -->
+    <div id="mode-select">
+      <p class="mode-intro">
+        古典文法の「助詞」「助動詞」を楽しく学ぶ推理ゲームです。<br>
+        二つのモードからお選びください。
+      </p>
+      <div class="mode-cards">
+        <div class="mode-card" onclick="startMode('akinator')">
+          <span class="icon">🔮</span>
+          <h2>アキネイターモード</h2>
+          <p>あなたが心で選んだ<br>助詞・助動詞を<br>ゲームが質問で当てます</p>
+        </div>
+        <div class="mode-card" onclick="startMode('reverse')">
+          <span class="icon">🧩</span>
+          <h2>逆アキネイターモード</h2>
+          <p>ゲームが特徴を順に<br>提示します。<br>あなたが推理して答えます</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME AREA -->
+    <div id="game-area" style="display:none"></div>
+
+  </div>
+  <div class="scroll-bottom"></div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+const WORDS = [
+  {
+    id: 1, type: "助動詞", name: "き",
+    meaning: "過去（直接経験）",
+    connections: ["連用形"],
+    conjugation: true, conjugationType: "特殊型",
+    hint1: "話者が直接経験した過去を表します",
+    hint2: "終止形は「き」、連体形は「し」です",
+    hint3: "「ぞ・なむ・や・か」に係ると連体形「し」になります",
+    example: "山を越えき（山を越えた）",
+    negatable: false, passive: false, tense: "過去"
+  },
+  {
+    id: 2, type: "助動詞", name: "けり",
+    meaning: "過去（伝聞・詠嘆）",
+    connections: ["連用形"],
+    conjugation: true, conjugationType: "ラ変型",
+    hint1: "伝え聞いたことや今気づいた感動を表します",
+    hint2: "「〜だったなあ」という詠嘆にもなります",
+    hint3: "係り結びで終止形「けり」が連体形「ける」になります",
+    example: "春来にけり（春が来たなあ）",
+    negatable: false, passive: false, tense: "過去"
+  },
+  {
+    id: 3, type: "助動詞", name: "む",
+    meaning: "推量・意志・婉曲など",
+    connections: ["未然形"],
+    conjugation: true, conjugationType: "四段型（ナ変）",
+    hint1: "推量・意志・仮定・婉曲・勧誘の6用法があります",
+    hint2: "連体形でよく婉曲の意味になります",
+    hint3: "「〜だろう」「〜しよう」の意を持ちます",
+    example: "行かむ（行こう／行くだろう）",
+    negatable: false, passive: false, tense: "未来"
+  },
+  {
+    id: 4, type: "助動詞", name: "ず",
+    meaning: "打消",
+    connections: ["未然形"],
+    conjugation: true, conjugationType: "特殊型",
+    hint1: "「〜ない」という否定を表します",
+    hint2: "連用形は「ず」、連体形は「ぬ」または「ざる」です",
+    hint3: "助動詞の中で唯一の打消し助動詞です（奈良時代〜）",
+    example: "行かず（行かない）",
+    negatable: true, passive: false, tense: null
+  },
+  {
+    id: 5, type: "助動詞", name: "たり",
+    meaning: "存続・完了",
+    connections: ["連用形"],
+    conjugation: true, conjugationType: "ラ変型",
+    hint1: "動作の結果が続いている状態（存続）を表します",
+    hint2: "動作が完了したことを表す場合もあります",
+    hint3: "「〜ている」「〜てある」に相当します",
+    example: "花咲きたり（花が咲いている）",
+    negatable: false, passive: false, tense: "完了"
+  },
+  {
+    id: 6, type: "助動詞", name: "り",
+    meaning: "存続・完了",
+    connections: ["已然形（サ変は未然形）"],
+    conjugation: true, conjugationType: "ラ変型",
+    hint1: "サ行変格活用の未然形、四段活用の已然形に接続します",
+    hint2: "「たり」と同じく存続・完了を表します",
+    hint3: "「さみしからず」の「り」がこれです",
+    example: "咲けり（咲いている）",
+    negatable: false, passive: false, tense: "完了"
+  },
+  {
+    id: 7, type: "助動詞", name: "べし",
+    meaning: "当然・推量・意志・命令・適当・可能",
+    connections: ["終止形（ラ変型は連体形）"],
+    conjugation: true, conjugationType: "形容詞型",
+    hint1: "「〜はずだ」「〜すべきだ」「〜できる」など多義です",
+    hint2: "推量系の助動詞の中でも特に意味が多いです",
+    hint3: "強意の意味があり文末によく使われます",
+    example: "行くべし（行くべきだ）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 8, type: "助動詞", name: "なり",
+    meaning: "断定・存在（伝聞推量）",
+    connections: ["体言・連体形 (断定)","終止形 (伝聞)"],
+    conjugation: true, conjugationType: "ラ変型",
+    hint1: "断定の「なり」と伝聞・推量の「なり」の2種があります",
+    hint2: "断定は体言・連体形に、伝聞は終止形に接続します",
+    hint3: "「〜である」「〜と聞こえる」の意です",
+    example: "これは山なり（これは山だ）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 9, type: "助動詞", name: "る・らる",
+    meaning: "受身・尊敬・自発・可能",
+    connections: ["未然形"],
+    conjugation: true, conjugationType: "下二段型",
+    hint1: "四段・ナ変・ラ変には「る」、その他には「らる」が接続します",
+    hint2: "受身・尊敬・自発・可能の4用法があります",
+    hint3: "現代語の「れる・られる」に対応します",
+    example: "見られる（見られる／見られている）",
+    negatable: false, passive: true, tense: null
+  },
+  {
+    id: 10, type: "助動詞", name: "す・さす",
+    meaning: "使役・尊敬",
+    connections: ["未然形"],
+    conjugation: true, conjugationType: "下二段型",
+    hint1: "四段・ナ変・ラ変には「す」、その他には「さす」が接続します",
+    hint2: "使役（〜させる）と尊敬（〜なさる）の2用法があります",
+    hint3: "現代語の「せる・させる」に対応します",
+    example: "行かす（行かせる）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 11, type: "助動詞", name: "まし",
+    meaning: "反実仮想・ためらいの意志",
+    connections: ["未然形"],
+    conjugation: true, conjugationType: "特殊型",
+    hint1: "「もし〜だったら〜だろうに」という反実仮想を表します",
+    hint2: "ためらいながらの意志・願望も表します",
+    hint3: "現実とは逆のことを想定する用法が中心です",
+    example: "行かましを（行けばよかったのに）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 12, type: "助動詞", name: "まほし",
+    meaning: "願望（自己の希望）",
+    connections: ["未然形"],
+    conjugation: true, conjugationType: "形容詞型",
+    hint1: "「〜したい」という話者自身の願望を表します",
+    hint2: "形容詞型の活用をします",
+    hint3: "「たし」とともに願望の代表的な助動詞です",
+    example: "見まほし（見たい）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 13, type: "助詞", name: "は",
+    meaning: "主題・対比の提示",
+    connections: ["体言・活用語など"],
+    conjugation: false,
+    hint1: "文の主題を示す係助詞です（現代語と同じ）",
+    hint2: "「Aはいいが、Bは〜」のように対比を表すこともあります",
+    hint3: "係り結びとは関係ありません",
+    example: "春はあけぼの（春は、夜明けが良い）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 14, type: "助詞", name: "ぞ",
+    meaning: "強意（係り結び）",
+    connections: ["体言・活用語"],
+    conjugation: false,
+    hint1: "係り結びを起こし、文末を連体形にします",
+    hint2: "強く断定・強調する気持ちを表します",
+    hint3: "「ぞ・なむ・や・か→連体形、こそ→已然形」と覚えます",
+    example: "花ぞ散りける（花が散ったのだよ）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 15, type: "助詞", name: "こそ",
+    meaning: "強意・逆接（係り結び）",
+    connections: ["体言・活用語"],
+    conjugation: false,
+    hint1: "係り結びを起こし、文末を已然形にします",
+    hint2: "係助詞の中で唯一已然形で結びます",
+    hint3: "「こそ〜已然形、〜」で逆接の意味になることがあります",
+    example: "これこそ面白けれ（これこそが面白い）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 16, type: "助詞", name: "の",
+    meaning: "格助詞（主格・連体格など）",
+    connections: ["体言"],
+    conjugation: false,
+    hint1: "「〜の」という連体格（所有・修飾）が主な用法です",
+    hint2: "「〜が」という主格を表す用法もあります（古文特有）",
+    hint3: "「春の花」「我の行く」など多用されます",
+    example: "君の行く道（君が行く道）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 17, type: "助詞", name: "に",
+    meaning: "格助詞（場所・時・目的など）",
+    connections: ["体言・連体形"],
+    conjugation: false,
+    hint1: "場所・時・目的・原因・比較など多くの意味を持ちます",
+    hint2: "現代語の「に」とほぼ同じ感覚で使えます",
+    hint3: "断定の助動詞「なり」の連用形「に」と混同に注意",
+    example: "山に登る（山に登る）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 18, type: "助詞", name: "て",
+    meaning: "接続助詞（連続・原因）",
+    connections: ["連用形"],
+    conjugation: false,
+    hint1: "動作の継続・順接を表す接続助詞です",
+    hint2: "「〜して」「〜であって」のように訳します",
+    hint3: "連用形に接続し、前後をつなぐ働きをします",
+    example: "見て帰る（見て帰る）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 19, type: "助詞", name: "ば",
+    meaning: "接続助詞（順接仮定・確定）",
+    connections: ["未然形（仮定）","已然形（確定）"],
+    conjugation: false,
+    hint1: "未然形＋ば：「もし〜ならば」（仮定条件）",
+    hint2: "已然形＋ば：「〜すると」「〜ので」（確定条件）",
+    hint3: "接続形によって意味が変わる重要な助詞です",
+    example: "春来れば（春が来ると）",
+    negatable: false, passive: false, tense: null
+  },
+  {
+    id: 20, type: "助詞", name: "を",
+    meaning: "格助詞（目的格・経過・原因）",
+    connections: ["体言"],
+    conjugation: false,
+    hint1: "目的を表す用法が基本です（現代語と同じ）",
+    hint2: "場所の経過（〜を通って）や原因（〜なのに）も表します",
+    hint3: "感動詞的に文末に置かれることもあります",
+    example: "山を越える（山を越える）",
+    negatable: false, passive: false, tense: null
+  }
+];
+
+// ─────────────────────────────────────────────
+// AKINATOR MODE LOGIC
+// ─────────────────────────────────────────────
+
+const AKINATOR_QUESTIONS = [
+  {
+    id: "type",
+    text: "まず確認します。選んだのは「助動詞」ですか、それとも「助詞」ですか？",
+    answers: [
+      { label: "助動詞", filter: w => w.type === "助動詞" },
+      { label: "助詞", filter: w => w.type === "助詞" }
+    ]
+  },
+  {
+    id: "conjugation",
+    text: "その語は活用（語形変化）がありますか？",
+    answers: [
+      { label: "はい（ある）", filter: w => w.conjugation === true },
+      { label: "いいえ（ない）", filter: w => w.conjugation === false }
+    ]
+  },
+  {
+    id: "connection",
+    text: "主に「未然形」に接続しますか？",
+    answers: [
+      { label: "はい", filter: w => w.connections.some(c => c.includes("未然形")) },
+      { label: "いいえ", filter: w => !w.connections.some(c => c.includes("未然形")) }
+    ]
+  },
+  {
+    id: "connection2",
+    text: "主に「連用形」に接続しますか？",
+    answers: [
+      { label: "はい", filter: w => w.connections.some(c => c.includes("連用形")) },
+      { label: "いいえ", filter: w => !w.connections.some(c => c.includes("連用形")) }
+    ]
+  },
+  {
+    id: "tense",
+    text: "その語は「過去」の意味を持ちますか？",
+    answers: [
+      { label: "はい", filter: w => w.tense === "過去" },
+      { label: "いいえ", filter: w => w.tense !== "過去" }
+    ]
+  },
+  {
+    id: "passive",
+    text: "受身・尊敬・自発・可能などを表しますか？",
+    answers: [
+      { label: "はい", filter: w => w.passive === true },
+      { label: "いいえ", filter: w => w.passive !== true }
+    ]
+  },
+  {
+    id: "negatable",
+    text: "打消（否定）の意味がありますか？",
+    answers: [
+      { label: "はい", filter: w => w.negatable === true },
+      { label: "いいえ", filter: w => w.negatable !== true }
+    ]
+  },
+  {
+    id: "kakari",
+    text: "係り結びと関係がありますか？",
+    answers: [
+      { label: "はい", filter: w => ["は","ぞ","こそ"].includes(w.name) },
+      { label: "いいえ", filter: w => !["は","ぞ","こそ"].includes(w.name) }
+    ]
+  }
+];
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let state = {
+  mode: null,
+  candidates: [],
+  qIndex: 0,
+  hints: [],
+  targetWord: null,
+  wrongGuesses: []
+};
+
+// ─────────────────────────────────────────────
+// RENDER HELPERS
+// ─────────────────────────────────────────────
+function getArea() { return document.getElementById('game-area'); }
+
+function showMode(show) {
+  document.getElementById('mode-select').style.display = show ? '' : 'none';
+  document.getElementById('game-area').style.display = show ? 'none' : 'block';
+  document.getElementById('site-header').style.display = show ? '' : 'none';
+  document.getElementById('top-divider').style.display = show ? '' : 'none';
+}
+
+function gameHeader(modeName) {
+  return `<div class="game-header">
+    <button class="back-btn" onclick="goHome()">← もどる</button>
+    <span class="mode-badge">${modeName}</span>
+    <span class="q-count" id="q-count"></span>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="prog" style="width:0%"></div></div>`;
+}
+
+// ─────────────────────────────────────────────
+// HOME
+// ─────────────────────────────────────────────
+function goHome() {
+  showMode(true);
+  getArea().innerHTML = '';
+}
+
+// ─────────────────────────────────────────────
+// START MODE
+// ─────────────────────────────────────────────
+function startMode(mode) {
+  state.mode = mode;
+  state.wrongGuesses = [];
+  showMode(false);
+  if (mode === 'akinator') startAkinator();
+  else startReverse();
+}
+
+// ─────────────────────────────────────────────
+// AKINATOR MODE
+// ─────────────────────────────────────────────
+function startAkinator() {
+  state.candidates = [...WORDS];
+  state.qIndex = 0;
+  renderAkinatorQ();
+}
+
+function renderAkinatorQ() {
+  const a = getArea();
+  const q = AKINATOR_QUESTIONS[state.qIndex];
+  const total = AKINATOR_QUESTIONS.length;
+  const prog = Math.round((state.qIndex / total) * 100);
+
+  if (!q || state.candidates.length === 1) {
+    renderAkinatorResult(state.candidates[0]);
+    return;
+  }
+  if (state.candidates.length === 0) {
+    a.innerHTML = gameHeader('🔮 アキネイターモード') +
+      `<div class="aki-speak">
+        <div class="aki-avatar">🔮</div>
+        <div class="aki-bubble">うーん…答えが見つかりませんでした。もう一度試してみましょう！</div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="play-again-btn" onclick="startAkinator()">もう一度</button>
+      </div>`;
+    return;
+  }
+
+  document.getElementById && setTimeout(() => {
+    const prog_el = document.getElementById('prog');
+    if (prog_el) prog_el.style.width = prog + '%';
+    const qc = document.getElementById('q-count');
+    if (qc) qc.textContent = `残り候補: ${state.candidates.length}語`;
+  }, 50);
+
+  const answerBtns = q.answers.map((ans, i) =>
+    `<button class="ans-btn" onclick="akinatorAnswer(${i})">${ans.label}</button>`
+  ).join('');
+
+  a.innerHTML = gameHeader('🔮 アキネイターモード') +
+    `<div class="think-prompt">
+      💡 心の中で助詞か助動詞を<strong>ひとつ</strong>決めてください。<br>
+      ゲームが質問して絞り込みます。
+    </div>
+    <div class="aki-speak">
+      <div class="aki-avatar">🔮</div>
+      <div class="aki-bubble">第${state.qIndex + 1}問：${q.text}</div>
+    </div>
+    <div class="question-bubble">
+      <div class="q-label">質問 ${state.qIndex + 1}</div>
+      <div class="q-text">${q.text}</div>
+    </div>
+    <div class="answer-btns">${answerBtns}</div>
+    <div style="text-align:center;margin-top:4px">
+      <button class="ans-btn" style="max-width:200px" onclick="akinatorSkip()">わからない・どちらでも</button>
+    </div>`;
+
+  setTimeout(() => {
+    const prog_el = document.getElementById('prog');
+    if (prog_el) prog_el.style.width = prog + '%';
+    const qc = document.getElementById('q-count');
+    if (qc) qc.textContent = `残り候補: ${state.candidates.length}語`;
+  }, 50);
+}
+
+function akinatorAnswer(ansIdx) {
+  const q = AKINATOR_QUESTIONS[state.qIndex];
+  const chosen = q.answers[ansIdx];
+  state.candidates = state.candidates.filter(chosen.filter);
+  state.qIndex++;
+  if (state.candidates.length <= 1 || state.qIndex >= AKINATOR_QUESTIONS.length) {
+    if (state.candidates.length === 0) state.candidates = [WORDS[Math.floor(Math.random()*WORDS.length)]];
+    renderAkinatorResult(state.candidates[0]);
+  } else {
+    renderAkinatorQ();
+  }
+}
+
+function akinatorSkip() {
+  state.qIndex++;
+  if (state.qIndex >= AKINATOR_QUESTIONS.length) {
+    if (state.candidates.length === 0) state.candidates = [WORDS[0]];
+    renderAkinatorResult(state.candidates[0]);
+  } else {
+    renderAkinatorQ();
+  }
+}
+
+function renderAkinatorResult(word) {
+  const a = getArea();
+  a.innerHTML = gameHeader('🔮 アキネイターモード') +
+    `<div class="aki-speak">
+      <div class="aki-avatar">🔮</div>
+      <div class="aki-bubble">わかりました！あなたが選んだのは…</div>
+    </div>
+    <div class="result-panel">
+      <span class="result-emoji">🎯</span>
+      <div class="result-word">「${word.name}」</div>
+      <div class="result-type">${word.type}</div>
+      <dl class="fact-box">
+        <dt>意　味</dt><dd>${word.meaning}</dd>
+        <dt>接　続</dt><dd>${word.connections.join('、')}</dd>
+        <dt>活　用</dt><dd>${word.conjugation ? '有り（' + word.conjugationType + '）' : 'なし'}</dd>
+        <dt>例　文</dt><dd>${word.example}</dd>
+        <dt>ポイント①</dt><dd>${word.hint1}</dd>
+        <dt>ポイント②</dt><dd>${word.hint2}</dd>
+      </dl>
+      <button class="play-again-btn" onclick="startAkinator()">もう一度</button>
+    </div>`;
+  setTimeout(() => {
+    const prog_el = document.getElementById('prog');
+    if (prog_el) prog_el.style.width = '100%';
+  }, 50);
+}
+
+// ─────────────────────────────────────────────
+// REVERSE MODE
+// ─────────────────────────────────────────────
+function startReverse() {
+  // pick random word
+  const w = WORDS[Math.floor(Math.random() * WORDS.length)];
+  state.targetWord = w;
+  state.hints = buildHints(w);
+  state.hintIndex = 0;
+  state.wrongGuesses = [];
+  renderReverse();
+}
+
+function buildHints(w) {
+  const hints = [];
+  hints.push(`品詞は「${w.type}」です。`);
+  if (w.conjugation) hints.push(`活用があります（${w.conjugationType}）。`);
+  else hints.push(`活用はありません。`);
+  hints.push(`「${w.connections[0]}」に接続します。`);
+  hints.push(`意味は「${w.meaning}」です。`);
+  hints.push(`例文：「${w.example}」`);
+  hints.push(w.hint1);
+  hints.push(w.hint2);
+  hints.push(w.hint3);
+  return hints;
+}
+
+function renderReverse() {
+  const a = getArea();
+  const w = state.targetWord;
+  const shownHints = state.hints.slice(0, state.hintIndex + 1);
+  const prog = Math.round(((state.hintIndex + 1) / state.hints.length) * 100);
+  const wrongHtml = state.wrongGuesses.length > 0
+    ? `<div class="wrong-msg">❌ 不正解：${state.wrongGuesses.join('、')} — もう一度！</div>` : '';
+
+  const hintList = shownHints.map((h, i) =>
+    `<div class="hint-item">
+      <div class="hint-num">${i + 1}</div>
+      <div class="hint-text">${h}</div>
+    </div>`
+  ).join('');
+
+  const nextHintBtn = state.hintIndex < state.hints.length - 1
+    ? `<button class="ans-btn" style="width:100%;max-width:260px;margin:0 auto 16px;display:block"
+        onclick="showNextHint()">📜 次のヒントを見る（${state.hintIndex + 1}/${state.hints.length}）</button>`
+    : `<p style="text-align:center;font-size:12px;color:var(--sepia);margin-bottom:16px;letter-spacing:0.1em">すべてのヒントを表示しました</p>`;
+
+  // guess grid — exclude already guessed wrong
+  const remaining = WORDS.filter(wd => !state.wrongGuesses.includes(wd.name));
+  const guessGrid = remaining.map(wd =>
+    `<button class="guess-btn" onclick="guessWord('${wd.name}')">${wd.name}</button>`
+  ).join('');
+
+  a.innerHTML = gameHeader('🧩 逆アキネイターモード') +
+    `<div class="aki-speak">
+      <div class="aki-avatar">🧩</div>
+      <div class="aki-bubble">ヒントを順に読んで、助詞・助動詞を当ててください！</div>
+    </div>
+    <div class="hints-log">${hintList}</div>
+    ${wrongHtml}
+    ${nextHintBtn}
+    <div class="guess-area">
+      <span class="guess-label">▼ あなたの答えは？</span>
+      <div class="guess-grid">${guessGrid}</div>
+    </div>`;
+
+  setTimeout(() => {
+    const prog_el = document.getElementById('prog');
+    if (prog_el) prog_el.style.width = prog + '%';
+    const qc = document.getElementById('q-count');
+    if (qc) qc.textContent = `ヒント: ${state.hintIndex + 1}/${state.hints.length}`;
+  }, 50);
+}
+
+function showNextHint() {
+  if (state.hintIndex < state.hints.length - 1) state.hintIndex++;
+  renderReverse();
+}
+
+function guessWord(name) {
+  if (name === state.targetWord.name) {
+    renderReverseResult(true);
+  } else {
+    state.wrongGuesses.push(name);
+    if (state.hintIndex < state.hints.length - 1) state.hintIndex++;
+    renderReverse();
+  }
+}
+
+function renderReverseResult(correct) {
+  const a = getArea();
+  const w = state.targetWord;
+  const usedHints = state.hintIndex + 1;
+  let stars = usedHints <= 2 ? '⭐⭐⭐' : usedHints <= 4 ? '⭐⭐' : '⭐';
+  let msg = usedHints <= 2 ? '素晴らしい！少ないヒントで正解！' : usedHints <= 4 ? 'よくできました！' : 'ヒントをたくさん使って正解！';
+
+  a.innerHTML = gameHeader('🧩 逆アキネイターモード') +
+    `<div class="aki-speak">
+      <div class="aki-avatar">🧩</div>
+      <div class="aki-bubble">正解です！${msg}</div>
+    </div>
+    <div class="result-panel">
+      <span class="result-emoji">✨</span>
+      <div style="font-size:22px;margin-bottom:8px">${stars}</div>
+      <div class="result-word">「${w.name}」</div>
+      <div class="result-type">${w.type} ／ ${usedHints}ヒント使用</div>
+      <dl class="fact-box">
+        <dt>意　味</dt><dd>${w.meaning}</dd>
+        <dt>接　続</dt><dd>${w.connections.join('、')}</dd>
+        <dt>活　用</dt><dd>${w.conjugation ? '有り（' + w.conjugationType + '）' : 'なし'}</dd>
+        <dt>例　文</dt><dd>${w.example}</dd>
+        <dt>ポイント①</dt><dd>${w.hint1}</dd>
+        <dt>ポイント②</dt><dd>${w.hint2}</dd>
+        <dt>ポイント③</dt><dd>${w.hint3}</dd>
+      </dl>
+      <button class="play-again-btn" onclick="startReverse()">次の問題へ</button>
+    </div>`;
+  setTimeout(() => {
+    const prog_el = document.getElementById('prog');
+    if (prog_el) prog_el.style.width = '100%';
+  }, 50);
+}
+</script>
+</body>
+</html>
